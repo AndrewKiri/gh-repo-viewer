@@ -1,5 +1,5 @@
 {
     "extends": "./tsconfig.json",
     "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx", "test/**/*.ts"],
-    "exclude": ["reportWebVitals.ts", "react-app-env.d.ts"]
+    "exclude": ["src/react-app-env.d.ts"]
 }
