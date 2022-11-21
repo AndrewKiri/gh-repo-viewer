@@ -4,5 +4,6 @@ export interface SearchData {
   search: {
     nodes: SearchResultItem[];
     pageInfo: PageInfo;
+    repositoryCount: number;
   };
 }

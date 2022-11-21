@@ -2,13 +2,13 @@ import React from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { SearchResultItem } from "../../generated/graphql";
-import { SearchData } from "../../types";
 
 const columns: ColumnsType<SearchResultItem> = [
   {
     title: "Name",
     dataIndex: "nameWithOwner",
     key: "name",
+    render: (text: string) => <a href={`https://github.com/${text}`}>{text}</a>,
   },
   {
     title: "Description",
@@ -26,12 +26,6 @@ const columns: ColumnsType<SearchResultItem> = [
     dataIndex: "stargazerCount",
   },
   {
-    title: "Github Page",
-    dataIndex: "nameWithOwner",
-    key: "nameWithOwner",
-    render: (text: string) => <a href={`https://github.com/${text}`}>{text}</a>,
-  },
-  {
     title: "Project Home Page",
     dataIndex: "homepageUrl",
     key: "homepageUrl",
@@ -40,11 +34,11 @@ const columns: ColumnsType<SearchResultItem> = [
 ];
 
 export interface TableComponentProps {
-  data: SearchData;
+  data: SearchResultItem[];
 }
 
 const TableComponent = ({ data }: TableComponentProps): JSX.Element => {
-  return <Table dataSource={data?.search?.nodes} columns={columns} />;
+  return <Table dataSource={data} columns={columns} pagination={false} />;
 };
 
 export default TableComponent;

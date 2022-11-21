@@ -26609,22 +26609,25 @@ export enum WorkflowRunOrderField {
 }
 
 export type SearchQueryVariables = Exact<{
-  search: Scalars['String'];
+  query: Scalars['String'];
+  first: Scalars['Int'];
+  after?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, nodes?: Array<{ __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', id: string, name: string, forkCount: number, description?: string | null, stargazerCount: number, nameWithOwner: string, homepageUrl?: any | null } | { __typename?: 'User' } | null> | null } };
+export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', repositoryCount: number, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, nodes?: Array<{ __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', id: string, name: string, forkCount: number, description?: string | null, stargazerCount: number, nameWithOwner: string, homepageUrl?: any | null } | { __typename?: 'User' } | null> | null } };
 
 
 export const SearchDocument = gql`
-    query Search($search: String!) {
-  search(query: $search, type: REPOSITORY, first: 20) {
+    query Search($query: String!, $first: Int!, $after: String) {
+  search(query: $query, type: REPOSITORY, first: $first, after: $after) {
     pageInfo {
       endCursor
       startCursor
       hasNextPage
       hasPreviousPage
     }
+    repositoryCount
     nodes {
       ... on Repository {
         id
@@ -26652,7 +26655,9 @@ export const SearchDocument = gql`
  * @example
  * const { data, loading, error } = useSearchQuery({
  *   variables: {
- *      search: // value for 'search'
+ *      query: // value for 'query'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -26669,14 +26674,15 @@ export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
 export type SearchQueryResult = Apollo.QueryResult<SearchQuery, SearchQueryVariables>;
 
 export const Search = gql`
-    query Search($search: String!) {
-  search(query: $search, type: REPOSITORY, first: 20) {
+    query Search($query: String!, $first: Int!, $after: String) {
+  search(query: $query, type: REPOSITORY, first: $first, after: $after) {
     pageInfo {
       endCursor
       startCursor
       hasNextPage
       hasPreviousPage
     }
+    repositoryCount
     nodes {
       ... on Repository {
         id
@@ -27737,4 +27743,4 @@ export const Search = gql`
 };
       export default result;
     
-// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-21T11:41:46+01:00
+// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-21T14:09:25+01:00

@@ -7,4 +7,4 @@ declare module '*/repository.graphql' {
   export default defaultDocument;
 }
     
-// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-21T11:41:46+01:00
+// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-21T14:09:25+01:00

@@ -1,11 +1,12 @@
-query Search ($search: String!) {
-  search(query: $search, type:REPOSITORY, first: 20) {
+query Search ($query: String!, $first: Int!, $after: String) {
+  search(query: $query, type:REPOSITORY, first: $first, after: $after) {
     pageInfo {
     	endCursor,
     	startCursor,
     	hasNextPage
     	hasPreviousPage,
   	}
+    repositoryCount,
     nodes {
       ... on Repository {
         id,
