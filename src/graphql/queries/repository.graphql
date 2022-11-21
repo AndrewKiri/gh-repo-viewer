@@ -1,19 +1,21 @@
-query Repository {
-  repository(owner:"octocat", name:"Hello-World") {
-    issues(last:20, states:CLOSED) {
-      edges {
-        node {
-          title
-          url
-          labels(first:5) {
-            edges {
-              node {
-                name
-              }
-            }
-          }
-        }
+query Search ($search: String!) {
+  search(query: $search, type:REPOSITORY, first: 20) {
+    pageInfo {
+    	endCursor,
+    	startCursor,
+    	hasNextPage
+    	hasPreviousPage,
+  	}
+    nodes {
+      ... on Repository {
+        id,
+        name,
+        forkCount
+        description
+        stargazerCount,
+        nameWithOwner,
+        homepageUrl
       }
-    }
+    },
   }
 }

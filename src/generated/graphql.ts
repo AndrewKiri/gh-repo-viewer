@@ -26608,28 +26608,32 @@ export enum WorkflowRunOrderField {
   CreatedAt = 'CREATED_AT'
 }
 
-export type RepositoryQueryVariables = Exact<{ [key: string]: never; }>;
+export type SearchQueryVariables = Exact<{
+  search: Scalars['String'];
+}>;
 
 
-export type RepositoryQuery = { __typename?: 'Query', repository?: { __typename?: 'Repository', issues: { __typename?: 'IssueConnection', edges?: Array<{ __typename?: 'IssueEdge', node?: { __typename?: 'Issue', title: string, url: any, labels?: { __typename?: 'LabelConnection', edges?: Array<{ __typename?: 'LabelEdge', node?: { __typename?: 'Label', name: string } | null } | null> | null } | null } | null } | null> | null } } | null };
+export type SearchQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, nodes?: Array<{ __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', id: string, name: string, forkCount: number, description?: string | null, stargazerCount: number, nameWithOwner: string, homepageUrl?: any | null } | { __typename?: 'User' } | null> | null } };
 
 
-export const RepositoryDocument = gql`
-    query Repository {
-  repository(owner: "octocat", name: "Hello-World") {
-    issues(last: 20, states: CLOSED) {
-      edges {
-        node {
-          title
-          url
-          labels(first: 5) {
-            edges {
-              node {
-                name
-              }
-            }
-          }
-        }
+export const SearchDocument = gql`
+    query Search($search: String!) {
+  search(query: $search, type: REPOSITORY, first: 20) {
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+      ... on Repository {
+        id
+        name
+        forkCount
+        description
+        stargazerCount
+        nameWithOwner
+        homepageUrl
       }
     }
   }
@@ -26637,48 +26641,51 @@ export const RepositoryDocument = gql`
     `;
 
 /**
- * __useRepositoryQuery__
+ * __useSearchQuery__
  *
- * To run a query within a React component, call `useRepositoryQuery` and pass it any options that fit your needs.
- * When your component renders, `useRepositoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRepositoryQuery({
+ * const { data, loading, error } = useSearchQuery({
  *   variables: {
+ *      search: // value for 'search'
  *   },
  * });
  */
-export function useRepositoryQuery(baseOptions?: Apollo.QueryHookOptions<RepositoryQuery, RepositoryQueryVariables>) {
+export function useSearchQuery(baseOptions: Apollo.QueryHookOptions<SearchQuery, SearchQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, options);
+        return Apollo.useQuery<SearchQuery, SearchQueryVariables>(SearchDocument, options);
       }
-export function useRepositoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RepositoryQuery, RepositoryQueryVariables>) {
+export function useSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchQuery, SearchQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, options);
+          return Apollo.useLazyQuery<SearchQuery, SearchQueryVariables>(SearchDocument, options);
         }
-export type RepositoryQueryHookResult = ReturnType<typeof useRepositoryQuery>;
-export type RepositoryLazyQueryHookResult = ReturnType<typeof useRepositoryLazyQuery>;
-export type RepositoryQueryResult = Apollo.QueryResult<RepositoryQuery, RepositoryQueryVariables>;
+export type SearchQueryHookResult = ReturnType<typeof useSearchQuery>;
+export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
+export type SearchQueryResult = Apollo.QueryResult<SearchQuery, SearchQueryVariables>;
 
-export const Repository = gql`
-    query Repository {
-  repository(owner: "octocat", name: "Hello-World") {
-    issues(last: 20, states: CLOSED) {
-      edges {
-        node {
-          title
-          url
-          labels(first: 5) {
-            edges {
-              node {
-                name
-              }
-            }
-          }
-        }
+export const Search = gql`
+    query Search($search: String!) {
+  search(query: $search, type: REPOSITORY, first: 20) {
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    nodes {
+      ... on Repository {
+        id
+        name
+        forkCount
+        description
+        stargazerCount
+        nameWithOwner
+        homepageUrl
       }
     }
   }
@@ -27730,4 +27737,4 @@ export const Repository = gql`
 };
       export default result;
     
-// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-20T19:27:46+01:00
+// The file was generated on: DD.MM.YYYY HH:mm:ss Z2022-11-21T11:41:46+01:00

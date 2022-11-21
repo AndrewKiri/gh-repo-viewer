@@ -1,90 +1,50 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { SearchResultItem } from "../../generated/graphql";
+import { SearchData } from "../../types";
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<SearchResultItem> = [
   {
     title: "Name",
-    dataIndex: "name",
+    dataIndex: "nameWithOwner",
     key: "name",
-    render: (text) => <a>{text}</a>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "Forks",
+    dataIndex: "forkCount",
+    key: "forkCount",
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    title: "Stars",
+    key: "stargazerCount",
+    dataIndex: "stargazerCount",
   },
   {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
+    title: "Github Page",
+    dataIndex: "nameWithOwner",
+    key: "nameWithOwner",
+    render: (text: string) => <a href={`https://github.com/${text}`}>{text}</a>,
+  },
+  {
+    title: "Project Home Page",
+    dataIndex: "homepageUrl",
+    key: "homepageUrl",
+    render: (text: string) => <a href={text}>{text}</a>,
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green Jr",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
+export interface TableComponentProps {
+  data: SearchData;
+}
 
-const Component = (): JSX.Element => {
-  return <Table dataSource={data} columns={columns} />;
+const TableComponent = ({ data }: TableComponentProps): JSX.Element => {
+  return <Table dataSource={data?.search?.nodes} columns={columns} />;
 };
 
-export default Component;
+export default TableComponent;
