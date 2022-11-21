@@ -1,9 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
 import chunk from "lodash/chunk";
-import { Spin, Input, Pagination } from "antd";
+import { Spin, Input } from "antd";
 import Table from "./components/Table";
 import "antd/dist/reset.css";
 import "./App.css";
+import Paginator from "./components/Paginator";
 import { SearchResultItem, useSearchLazyQuery } from "./generated/graphql";
 import { usePagination } from "./hooks/usePagination";
 
@@ -27,6 +28,10 @@ function App(): JSX.Element {
       perPage: pageSize,
     });
   }, []);
+
+  useEffect(() => {
+    setPagination({ page: 1, perPage });
+  }, [perPage]);
 
   useEffect(() => {
     if (page > repositories.length) {
@@ -82,23 +87,16 @@ function App(): JSX.Element {
                 </div>
               </div>
             )}
-            <Pagination
-              style={{ margin: "12px 0" }}
+            <Paginator
+              current={page}
               total={data?.search?.repositoryCount}
               showTotal={(total) => `Total ${total} items`}
               defaultPageSize={perPage}
               defaultCurrent={page}
               onChange={onPaginationChange}
-            />
-            <Table data={repositories[page - 1]} />
-            <Pagination
-              style={{ margin: "12px 0" }}
-              total={data?.search?.repositoryCount}
-              showTotal={(total) => `Total ${total} items`}
-              defaultPageSize={perPage}
-              defaultCurrent={page}
-              onChange={onPaginationChange}
-            />
+            >
+              <Table data={repositories[page - 1]} />
+            </Paginator>
           </div>
         </div>
       </div>
