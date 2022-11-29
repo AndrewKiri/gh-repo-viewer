@@ -75,6 +75,7 @@ function App(): JSX.Element {
       <div className="content">
         <div className="col">
           <Search
+            name="search"
             className="search"
             placeholder="Search by keyword"
             onSearch={setSearch}
@@ -88,9 +89,9 @@ function App(): JSX.Element {
               </div>
             )}
             <Paginator
+              mode="topAndBottom"
               current={page}
               total={data?.search?.repositoryCount}
-              showTotal={(total) => `Total ${total} items`}
               defaultPageSize={perPage}
               defaultCurrent={page}
               onChange={onPaginationChange}
