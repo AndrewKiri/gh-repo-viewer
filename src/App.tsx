@@ -90,7 +90,6 @@ function App(): JSX.Element {
             <Paginator
               current={page}
               total={data?.search?.repositoryCount}
-              showTotal={(total) => `Total ${total} items`}
               defaultPageSize={perPage}
               defaultCurrent={page}
               onChange={onPaginationChange}
